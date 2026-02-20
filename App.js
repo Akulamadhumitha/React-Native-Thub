@@ -1,73 +1,46 @@
 import {React, use} from "react";
 import { Text,StyleSheet,Image,FlatList, View} from "react-native";
-import { HelperText, TextInput ,Button,Chip} from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Dialog,Button,Chip,Provider,Portal} from "react-native-paper";
+import { SafeAreaView ,SafeAreaProvider} from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 
 const App = () => {
   
-  const [chiplist,setchiplist] = useState([]);
-  const [text,settext]=useState("");
-  const [disable,setdisable]=useState(false);
-  const [helper,sethelper]=useState(true);
-  const Add = () => {
-    if(text.trim() === "") return;
+  const [visible, setVisible] = useState(true);
 
-    setchiplist(prev => [...prev,text]);
-    settext("");
-  };
-  const Delete = (idx) => {
-    setchiplist(chiplist.filter((_,i) => i!==idx));
-  };
   return (
+    <SafeAreaProvider>
+    <Provider>
     <SafeAreaView style={{ flex: 1}}>
     <StatusBar style="dark" backgroundColor="green"/>
-    
-    <TextInput
-      onChangeText={(data)=>settext(data)}
-      label={"Enter Skill"}
-      mode="view"
-      disabled={chiplist.length == 5 ? (!disable) : (disable)}
-    />
-    <Button mode="contained" style={MyStyles.myButton} onPress={Add}
-      disabled={chiplist.length == 5 ? (!disable) : (disable)}
-
-    >Add Skill</Button>
-    <HelperText 
-    visible={chiplist.length > 0 ? (!helper) : (helper)}
-    style={MyStyles.helperText}>
-      No skills are added here.
-    </HelperText>
-    {
-      chiplist.map((ele,idx)=>(
-        <View style={MyStyles.chipView}>
-        <Chip
-        // key={idx}
-        closeIcon="close-circle"
-        // onClose={()=>console.log("closed")}
-        onClose={()=>Delete(idx)}
-        >
-          {ele}
-        </Chip>
-        </View>
-      ))
-    }
+    <Portal>
+      
+    <Dialog visible={visible} onDismiss={()=>setVisible(!visible)}>
+      <Text style={MyStyles.warningsty}>Warning!</Text>
+      <Dialog.Content>
+        <Text>Do you really want to change?</Text>
+      </Dialog.Content>
+      <Dialog.Actions>
+        <Button onPress={()=>setVisible(!visible)} mode="contained">YES</Button>
+      </Dialog.Actions>
+    </Dialog>
+    </Portal>
 
   </SafeAreaView>
+  </Provider>
+  </SafeAreaProvider>
 )
 
 }
 export default App;
 
 const MyStyles = StyleSheet.create({
-     myButton:{
-      marginTop:10,
-      width:150,
-      marginLeft:"28%",
-     },
-     helperText:{
-      marginTop:10
+     warningsty:{
+      paddingLeft:22,
+      paddingBottom:6,
+      fontSize:16,
+      fontWeight:"bold"
      }
      
 })
