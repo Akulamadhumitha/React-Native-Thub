@@ -8,7 +8,9 @@ const Home = () => {
         <>
         <Text>This is Home Screen</Text>
         <Button onPress={()=>{
-            Navigation.navigate("Contact")
+            Navigation.navigate("Contact",{
+                "userId":123
+            })
         }}>Move to Contact Screen</Button>
         </>
     )
