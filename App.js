@@ -1,46 +1,56 @@
 import {React, use} from "react";
 import { Text,StyleSheet,Image,FlatList, View} from "react-native";
-import { Dialog,Button,Chip,Provider,Portal} from "react-native-paper";
-import { SafeAreaView ,SafeAreaProvider} from "react-native-safe-area-context";
+import { Button,Icon } from "react-native-paper";
+import { SafeAreaView} from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
+import Home from './Home';
+import Contact from './Contact';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// import '@react-native-screen'
 
 const App = () => {
   
-  const [visible, setVisible] = useState(true);
+  const stack = createNativeStackNavigator();
+  
 
   return (
-    <SafeAreaProvider>
-    <Provider>
+    
+    
     <SafeAreaView style={{ flex: 1}}>
     <StatusBar style="dark" backgroundColor="green"/>
-    <Portal>
-      
-    <Dialog visible={visible} onDismiss={()=>setVisible(!visible)}>
-      <Text style={MyStyles.warningsty}>Warning!</Text>
-      <Dialog.Content>
-        <Text>Do you really want to change?</Text>
-      </Dialog.Content>
-      <Dialog.Actions>
-        <Button onPress={()=>setVisible(!visible)} mode="contained">YES</Button>
-      </Dialog.Actions>
-    </Dialog>
-    </Portal>
+    
+    <NavigationContainer>
+      <stack.Navigator
+        screenOptions={{
+          // headerStyle:{
+          //   backgroundColor:"yellow"
+          // },
+          headerTintColor:"blue",
+          headerTitleStyle:{
+            fontSize:22
+          },
+          headerTitleAlign:"center",
+          headerRight:()=><Icon source={"bell"} size={22}/>,
+          animation:"fade"
+
+        }}
+      >
+        <stack.Screen name="Home" component={Home}/>
+        <stack.Screen name="Contact" component={Contact}/>
+      </stack.Navigator>
+    </NavigationContainer>
+    
 
   </SafeAreaView>
-  </Provider>
-  </SafeAreaProvider>
+  
 )
 
 }
 export default App;
 
 const MyStyles = StyleSheet.create({
-     warningsty:{
-      paddingLeft:22,
-      paddingBottom:6,
-      fontSize:16,
-      fontWeight:"bold"
-     }
+     
      
 })
