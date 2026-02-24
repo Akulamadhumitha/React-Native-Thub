@@ -7,12 +7,12 @@ import { useState } from "react";
 import Home from './Home';
 import Contact from './Contact';
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// import '@react-native-screen'
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 
 const App = () => {
   
-  const stack = createNativeStackNavigator();
+  const BottomTabNavigator = createBottomTabNavigator();
   
 
   return (
@@ -22,24 +22,25 @@ const App = () => {
     <StatusBar style="dark" backgroundColor="green"/>
     
     <NavigationContainer>
-      <stack.Navigator
-        screenOptions={{
-          // headerStyle:{
-          //   backgroundColor:"yellow"
-          // },
-          headerTintColor:"blue",
-          headerTitleStyle:{
-            fontSize:22
-          },
-          headerTitleAlign:"center",
-          headerRight:()=><Icon source={"bell"} size={22}/>,
-          animation:"fade"
-
-        }}
+      <BottomTabNavigator.Navigator
+           screenOptions={({route})=>({
+            tabBarIcon:({focused,color})=>{
+               let iconName;
+               if(route.name=="Home"){
+                   iconName = focused ? "home" : "home-outline";
+               }
+               if(route.name=="Contact"){
+                iconName = focused ? "account-circle" : "account-circle-outline";
+               }
+               return <Icon source={iconName} size={30} color={"color"}/>
+            },
+            tabBarActiveTintColor : "green",
+            tabBarInactiveTintColor : "black"
+           })}
       >
-        <stack.Screen name="Home" component={Home}/>
-        <stack.Screen name="Contact" component={Contact}/>
-      </stack.Navigator>
+        <BottomTabNavigator.Screen name="Home" component={Home}/>
+        <BottomTabNavigator.Screen name="Contact" component={Contact}/>
+      </BottomTabNavigator.Navigator>
     </NavigationContainer>
     
 
@@ -50,7 +51,4 @@ const App = () => {
 }
 export default App;
 
-const MyStyles = StyleSheet.create({
-     
-     
-})
+
