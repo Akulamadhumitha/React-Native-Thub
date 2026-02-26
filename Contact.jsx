@@ -9,8 +9,8 @@ const Contact = () => {
         <>
         <Text>Welcome to the Contact Screen</Text>
         <Button onPress={()=>{
-            Navigation.navigate('Profile')
-        }}>Move to Profile Screen</Button>
+            Navigation.navigate('Home')
+        }}>Move to Home Screen</Button>
         </>
     )
 };
